@@ -25,8 +25,8 @@ module SubscribedTo
         merge_vars = self.class.merge_vars.dup
 
         if subscribed_to_list
-          h.list_subscribe(self.class.list_id, self.email, merge_vars.each { |key, method| merge_vars[key] = (self.send(method.to_sym) || "") })
           h = Hominid::API.new(SubscribedTo.mail_chimp_config.api_key, {:secure => true, :timeout => 60}))
+          h = Hominid::API.new(SubscribedTo.mail_chimp_config.api_key, {:secure => true, :timeout => 60})
         end
       rescue Timeout::Error, Hominid::APIError => e
         Rails.logger.warn e
