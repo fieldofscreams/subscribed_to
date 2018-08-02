@@ -26,7 +26,6 @@ module SubscribedTo
 
         if subscribed_to_list
           h = Hominid::API.new(SubscribedTo.mail_chimp_config.api_key, {:secure => true, :timeout => 60})
-          h = Hominid::API.new(SubscribedTo.mail_chimp_config.api_key, {:secure => true, :timeout => 60})
         end
       rescue Timeout::Error, Hominid::APIError => e
         Rails.logger.warn e
@@ -44,7 +43,7 @@ module SubscribedTo
           list_id          = self.class.list_id
           email_attr       = merge_vars["EMAIL"]
           subscribed_email = self.changed.include?(email_attr.to_s) ? changed_attributes[email_attr.to_s] : self.send(email_attr)
-          h                = Hominid::API.new(api_key)
+          h                = Hominid::API.new(api_key, {:secure => true, :timeout => 60})
 
           if self.changed.include?("subscribed_to_list")
             if !subscribed_to_list
