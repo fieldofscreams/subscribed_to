@@ -1,6 +1,6 @@
 require 'subscribed_to/mail_chimp/config'
 require 'subscribed_to/mail_chimp/web_hook'
-require 'hominid'
+require 'gibbon'
 
 module SubscribedTo
   # Module for MailChimp subscription interaction
@@ -25,9 +25,9 @@ module SubscribedTo
         merge_vars = self.class.merge_vars.dup
 
         if subscribed_to_list
-          h = Hominid::API.new(SubscribedTo.mail_chimp_config.api_key, {:secure => true, :timeout => 60})
+          g = Gibbon::Request.new(api_key: api_key)
         end
-      rescue Timeout::Error, Hominid::APIError => e
+      rescue Timeout::Error, Gibbon::MailChimpError => e
         Rails.logger.warn e
       end
 
@@ -43,19 +43,29 @@ module SubscribedTo
           list_id          = self.class.list_id
           email_attr       = merge_vars["EMAIL"]
           subscribed_email = self.changed.include?(email_attr.to_s) ? changed_attributes[email_attr.to_s] : self.send(email_attr)
-          h                = Hominid::API.new(api_key, {:secure => true, :timeout => 60})
+          g                = Gibbon::Request.new(api_key: api_key)
 
           if self.changed.include?("subscribed_to_list")
+            lower_case_md5_hashed_email_address = Digest::MD5.hexdigest(subscribed_email.downcase)
+            
             if !subscribed_to_list
-              h.list_unsubscribe(list_id, subscribed_email)
+              g.lists(list_id).members(lower_case_md5_hashed_email_address).update(body: { status: "unsubscribed" })
             else
-              h.list_subscribe(list_id, subscribed_email, merge_vars.each { |key, method| merge_vars[key] = self.send(method.to_sym) })
+              
+              begin
+                g.lists(list_id).members(lower_case_md5_hashed_email_address).upsert(body: {email_address: subscribed_email, status: "subscribed", merge_fields: merge_vars.each { |key, method| merge_vars[key] = self.send(method.to_sym) }})
+              rescue Gibbon::MailChimpError => e
+                # User is already on the list and unsubscribed from the mailing list. Set to pending so they can resubscribe
+                if e.title == "Member In Compliance State"
+                  g.lists(list_id).members(lower_case_md5_hashed_email_address).upsert(body: {email_address: subscribed_email, status: "pending" })
+                end
+              end
+              
+              
             end
-          elsif subscribed_to_list && !(self.changed & merge_vars.collect { |key, method| method.to_s }).empty?
-            h.list_update_member(list_id, subscribed_email, merge_vars.each { |key, method| merge_vars[key] = self.send(method.to_sym) })
           end
         end
-      rescue Hominid::APIError => e
+      rescue Gibbon::MailChimpError => e
         Rails.logger.warn e
       end
     end
