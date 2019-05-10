@@ -25,7 +25,7 @@ module SubscribedTo
         merge_vars = self.class.merge_vars.dup
 
         if subscribed_to_list
-          g = Gibbon::Request.new(api_key: api_key)
+          g = Gibbon::Request.new(api_key: SubscribedTo.mail_chimp_config.api_key)
         end
       rescue Timeout::Error, Gibbon::MailChimpError => e
         Rails.logger.warn e
