@@ -36,7 +36,13 @@ module SubscribedTo
             g.lists(list_id).members(lower_case_md5_hashed_email_address).upsert(body: {email_address: subscribed_email, status: "subscribed", merge_fields: {FNAME: self.first_name, LNAME: self.last_name}})
             
           else
-            g.lists(list_id).members(lower_case_md5_hashed_email_address).upsert(body: {email_address: subscribed_email, status: "subscribed"})
+            begin
+              g.lists(list_id).members(lower_case_md5_hashed_email_address).upsert(body: {email_address: subscribed_email, status: "subscribed"})
+            rescue Gibbon::MailChimpError => ex
+              if ex.title.to_s.include? "Compliance" # This user unsubscribed from us in the past, but wants to resubscribe
+                g.lists(list_id).members(lower_case_md5_hashed_email_address).upsert(body: {email_address: subscribed_email, status: "pending", merge_fields: {FNAME: self.first_name, LNAME: self.last_name}})
+              end
+            end
              
           end
           
@@ -64,7 +70,13 @@ module SubscribedTo
             else
             
               if !self.first_name.nil? && !self.last_name.nil?
+                begin
                 g.lists(list_id).members(lower_case_md5_hashed_email_address).upsert(body: {email_address: subscribed_email, status: "subscribed", merge_fields: {FNAME: self.first_name, LNAME: self.last_name}})
+                rescue Gibbon::MailChimpError => ex
+                  if ex.title.to_s.include? "Compliance" # This user unsubscribed from us in the past, but wants to resubscribe
+                    g.lists(list_id).members(lower_case_md5_hashed_email_address).upsert(body: {email_address: subscribed_email, status: "pending", merge_fields: {FNAME: self.first_name, LNAME: self.last_name}})
+                  end
+                end
               else
                 g.lists(list_id).members(lower_case_md5_hashed_email_address).upsert(body: {email_address: subscribed_email, status: "subscribed"})
               end
