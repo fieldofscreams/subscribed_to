@@ -9,7 +9,7 @@ gem "gibbon"
 group :development do
   gem "sqlite3-ruby", :require => "sqlite3"
   gem 'database_cleaner'
-  gem "factory_girl_rails", "1.0.1"
+  gem "factory_girl_rails", "4.9.0"
   gem "mocha", "0.9.12"
   gem "rspec-rails", "2.5.0"
   gem "generator_spec"
