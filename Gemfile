@@ -10,7 +10,7 @@ group :development do
   gem "sqlite3-ruby", :require => "sqlite3"
   gem 'database_cleaner'
   gem "factory_girl_rails", "1.0.1"
-  gem "mocha", "0.9.12"
+  gem "mocha", "1.11.2"
   gem "rspec-rails", "2.5.0"
   gem "generator_spec"
   gem "bundler", ">= 1.0.0"

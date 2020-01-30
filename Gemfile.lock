@@ -64,7 +64,7 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.16)
-    mocha (0.9.12)
+    mocha (1.11.2)
     multi_json (1.13.1)
     multipart-post (2.0.0)
     polyglot (0.3.1)
@@ -124,7 +124,7 @@ DEPENDENCIES
   gibbon
   hanna
   hominid!
-  mocha (= 0.9.12)
+  mocha (= 1.11.2)
   rspec-rails (= 2.5.0)
   simplecov (>= 0.4.0)
   sqlite3-ruby
