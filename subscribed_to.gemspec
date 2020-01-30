@@ -102,7 +102,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<rspec-rails>, ["= 2.5.0"])
       s.add_development_dependency(%q<generator_spec>, [">= 0"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
-      s.add_development_dependency(%q<jeweler>, ["~> 1.6.0"])
+      s.add_development_dependency(%q<jeweler>, "~> 2.3.9")
       s.add_development_dependency(%q<simplecov>, [">= 0.4.0"])
       s.add_development_dependency(%q<hanna>, [">= 0"])
     else
@@ -116,7 +116,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<rspec-rails>, ["= 2.5.0"])
       s.add_dependency(%q<generator_spec>, [">= 0"])
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
-      s.add_dependency(%q<jeweler>, ["~> 1.6.0"])
+      s.add_dependency(%q<jeweler>, "~> 2.3.9")
       s.add_dependency(%q<simplecov>, [">= 0.4.0"])
       s.add_dependency(%q<hanna>, [">= 0"])
     end
@@ -131,7 +131,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<rspec-rails>, ["= 2.5.0"])
     s.add_dependency(%q<generator_spec>, [">= 0"])
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])
-    s.add_dependency(%q<jeweler>, ["~> 1.6.0"])
+    s.add_dependency(%q<jeweler>, "~> 2.3.9")
     s.add_dependency(%q<simplecov>, [">= 0.4.0"])
     s.add_dependency(%q<hanna>, [">= 0"])
   end
