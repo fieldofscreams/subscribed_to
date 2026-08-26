@@ -11,7 +11,7 @@ group :development do
   gem 'database_cleaner'
   gem "factory_girl_rails", "1.0.1"
   gem "mocha", "0.9.12"
-  gem "rspec-rails", "2.5.0"
+  gem "rspec-rails", "3.9.0"
   gem "generator_spec"
   gem "bundler", ">= 1.0.0"
   gem "simplecov", ">=0.4.0"
